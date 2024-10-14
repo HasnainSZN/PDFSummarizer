@@ -1,14 +1,15 @@
 from fastapi import FastAPI, File, UploadFile
 import PyPDF2
 import os
+from dotenv import load_dotenv
 from groq import Groq
 
-# Set your Groq API key
-GROQ_API_KEY = "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"  # Replace with your actual API key
-os.environ["GROQ_API_KEY"] = GROQ_API_KEY
+
+load_dotenv()
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")  # This retrieves the API key from .env
 
 # Initialize Groq client
-client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
+client = Groq(api_key=GROQ_API_KEY)
 
 app = FastAPI()
 
