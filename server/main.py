@@ -4,7 +4,6 @@ import os
 from dotenv import load_dotenv
 from groq import Groq
 
-
 load_dotenv()
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")  # This retrieves the API key from .env
 
@@ -12,6 +11,16 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")  # This retrieves the API key from .env
 client = Groq(api_key=GROQ_API_KEY)
 
 app = FastAPI()
+
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Replace with your frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Function to extract text from PDF
 def extract_text_from_pdf(pdf_file):
@@ -23,7 +32,7 @@ def extract_text_from_pdf(pdf_file):
     return text
 
 # API route to summarize PDF using Groq
-@app.post("/summarize")
+@app.post("/upload")
 async def summarize_pdf(file: UploadFile = File(...)):
     try:
         # Extract text from the uploaded PDF
